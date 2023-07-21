@@ -1,0 +1,85 @@
+import cv2
+import numpy as np
+cap = cv2.VideoCapture(0)
+
+Romin=np.array([0,100,100])
+Romax=np.array([0,255,255])
+Namin=np.array([3,100,100])
+Namax=np.array([9,255,255])
+Amamin=np.array([10,100,100])
+Amamax=np.array([20,255,255])
+Vermin=np.array([40,100,100])
+Vermax=np.array([80,255,255])
+Azulcmin=np.array([81,100,100])
+Azulcmax=np.array([100,255,255])
+Azulmin=np.array([101,100,100])
+Azulmax=np.array([140,255,255])
+Vitmin=np.array([130,100,100])
+Vitmin=np.array([180,255,255])
+
+#LAB
+min=np.array([70,-128,-128])
+max=np.array([70,-100,-100])
+min1=np.array([70,-90,-90])
+max1=np.array([70,-80,-80])
+min2=np.array([70,-70,-70])
+max2=np.array([70,-50,-50])
+min3=np.array([0,0,0])
+max3=np.array([70,50,50])
+min4=np.array([70,60,60])
+max4=np.array([70,80,80])
+min5=np.array([70,90,90])
+max5=np.array([70,100,100])
+min6=np.array([70,110,110])
+max6=np.array([70,128,128])
+
+while True:
+  ret,frame = cap.read()
+  if ret==True:
+    frameHSV = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+    frameLAB = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+    mask = cv2.inRange(frameHSV, Romin, Romax)
+    mask1 = cv2.inRange(frameHSV, Namin, Namax)
+    mask2 = cv2.inRange(frameHSV, Amamin, Amamax)
+    mask3 = cv2.inRange(frameHSV, Vermin, Vermax)
+    mask4 = cv2.inRange(frameHSV, Azulcmin, Azulcmax)
+    mask5 = cv2.inRange(frameHSV, Azulmin, Azulmax)
+    mask6 = cv2.inRange(frameHSV, Vitmin, Vitmin)
+    resultado = cv2.bitwise_and(frame, frame, mask=mask)
+    resultado1 = cv2.bitwise_and(frame, frame, mask=mask1)
+    resultado2 = cv2.bitwise_and(frame, frame, mask=mask2)
+    resultado3 = cv2.bitwise_and(frame, frame, mask=mask3)
+    resultado4 = cv2.bitwise_and(frame, frame, mask=mask4)
+    resultado5 = cv2.bitwise_and(frame, frame, mask=mask5)
+    resultado6 = cv2.bitwise_and(frame, frame, mask=mask6)
+    frameRes=resultado+resultado1+resultado2+resultado3+resultado4+ resultado5+resultado6
+    
+    mask0 = cv2.inRange(frameLAB, min, max)
+    mask1lab = cv2.inRange(frameLAB, min1, max1)
+    mask2lab = cv2.inRange(frameLAB, min2, max2)
+    mask3lab = cv2.inRange(frameLAB, min3, max3)
+    mask4lab = cv2.inRange(frameLAB, min4, max4)
+    mask5lab = cv2.inRange(frameLAB, min5, max5)
+    mask6lab = cv2.inRange(frameLAB, min6, max6)
+    
+    maska=cv2.add(mask0,mask1lab,mask2lab)
+    maskb=cv2.add(mask4lab,mask3lab,mask5lab)
+    maskc=cv2.add(maska,maskb,mask6lab)
+    
+    frameRes1 = cv2.bitwise_and(frameLAB, frameLAB, mask=maskc)
+    
+    
+    maskLAB = cv2.add(mask3,mask4)
+    #maskHSV3 = cv2.add(mask6, mask7)
+    #maskHSVR = cv2.add(maskHSV1,maskHSV2)
+    #masLAB = cv2.add(maskRed1, maskRed2)
+    #maskHSVvis = cv2.bitwise_and(frame, frame, mask= maskHSV1)  
+    maskLABvis = cv2.bitwise_and(frame, frame, mask= maskLAB)        
+    #cv2.imshow('frame', frame)
+    #cv2.imshow('maskRed', maskHSV1)
+    cv2.imshow('maskHSVvis',frameRes )
+    cv2.imshow('maskLABvis', frameRes1)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+      break
+cap.release()
+cv2.destroyAllWindows()

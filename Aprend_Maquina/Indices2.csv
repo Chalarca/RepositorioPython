@@ -1,0 +1,13 @@
+ClassId,Name
+0,Speed limit (20km/h)
+1,Speed limit (30km/h)
+2,Speed limit (50km/h)
+3,Speed limit (60km/h)
+4,Speed limit (120km/h)
+5,No passing
+6,No passing for vechiles over 3.5 metric tons
+7,Right-of-way at the next intersection
+8,Stop
+9,No entry
+10,General caution
+11,Double curve
